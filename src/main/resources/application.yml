@@ -1,0 +1,29 @@
+server:
+  error:
+    include-message: always
+
+spring:
+  datasource:
+    url: jdbc:${DATABASE_URL:mysql://usr:User12345@localhost:3306/development}
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+#spring:
+#  datasource:
+#    url: jdbc:h2:mem:testdb
+#  h2:
+#    console:
+#      enabled: true
+#      path: /console
+#  jpa:
+#    show-sql: true
+#
+#logging:
+#  level:
+#    org.hibernate.SQL: DEBUG
+#    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+logging:
+  level:
+    org.axonframework.config: DEBUG
