@@ -1,4 +1,5 @@
 server:
+  port: 4000
   error:
     include-message: always
 
@@ -19,11 +20,9 @@ spring:
 #  jpa:
 #    show-sql: true
 #
-#logging:
-#  level:
-#    org.hibernate.SQL: DEBUG
-#    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
 logging:
   level:
     org.axonframework.config: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
