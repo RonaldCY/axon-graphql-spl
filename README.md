@@ -1,4 +1,4 @@
-# axon-graphql-starter
+# axon-graphql-spl
 
 ## start supporting servers
 
@@ -33,6 +33,32 @@ curl -X POST 'http://localhost:8080/patient' -H 'Content-Type: application/json'
 
 curl -X POST 'http://localhost:8080/hospital/VH/ward/A1/checkIn' -H 'Content-Type: application/json' \
   -d '{ "hkid": "A1234563", "bedNum": 12 }'
+```
+
+```Graph QL
+mutation {
+  createHospital(input: { hospCode: "VH" })
+}
+
+mutation {
+  addWard(hospCode: "VH", input: { wardCode: "A1" })
+}
+
+mutation {
+  addBed(hospCode: "VH", wardCode: "A1", input: { bedNum: 12 })
+}
+
+mutation {
+  createPatient(input: { hkid: "A1234563", name: "Mary" })
+}
+
+mutation {
+  checkIn(
+    hospCode: "VH"
+    wardCode: "A1"
+    input: { hkid: "A1234563", bedNum: 12 }
+  )
+}
 ```
 
 ### Query
