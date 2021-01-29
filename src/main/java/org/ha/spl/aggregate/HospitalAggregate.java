@@ -1,5 +1,6 @@
 package org.ha.spl.aggregate;
 
+import lombok.AllArgsConstructor;
 import org.ha.spl.api.*;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @Aggregate(snapshotTriggerDefinition = "hospitalSnapshotTrigger")
 @Slf4j
-@NoArgsConstructor
+@AllArgsConstructor
 public class HospitalAggregate {
 
     private final List<String> wards = new ArrayList<>();

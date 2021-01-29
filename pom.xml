@@ -40,6 +40,12 @@
             <groupId>org.axonframework</groupId>
             <artifactId>axon-spring-boot-starter</artifactId>
             <version>${axon.version}</version>
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <groupId>org.axonframework</groupId>-->
+<!--                    <artifactId>axon-server-connector</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
         </dependency>
         <!-- temporary use the 1.4.13 instead of 1.4.11.1 for jdk 11, should remove once axon fix the deps -->
         <dependency>

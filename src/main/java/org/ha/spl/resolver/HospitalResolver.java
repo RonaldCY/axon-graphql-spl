@@ -11,7 +11,6 @@ import org.ha.spl.query.hospital.HospitalView;
 import org.ha.spl.query.ward.WardView;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -37,16 +36,17 @@ public class HospitalResolver {
         return this.commandGateway.send(
                 new CreateHospitalCommand(dto.getHospCode()))
                 .exceptionally(exception -> {
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Already exists");
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.toString());
                 });
     }
 
     @GraphQLMutation
-    public CompletableFuture<Object> addWard(@GraphQLNonNull String hospCode, @GraphQLArgument(name = "input") @GraphQLNonNull AddWardDTO dto) {
+    public CompletableFuture<AddWardDTO> addWard(@GraphQLNonNull String hospCode, @GraphQLArgument(name = "input") @GraphQLNonNull AddWardDTO dto) {
         log.info("addWard {}", dto);
         return this.commandGateway.send(
-                new AddWardCommand(hospCode, dto.getWardCode()))
-                .exceptionally(exception -> {
+                new AddWardCommand(hospCode, dto.getWardCode())).thenApply(obj -> {
+                    return dto;
+                }).exceptionally(exception -> {
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.toString());
                 });
     }
