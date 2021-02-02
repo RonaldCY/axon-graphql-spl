@@ -15,7 +15,7 @@ import java.util.List;
 
 @Aggregate(snapshotTriggerDefinition = "hospitalSnapshotTrigger")
 @Slf4j
-@AllArgsConstructor
+@NoArgsConstructor
 public class HospitalAggregate {
 
     private final List<String> wards = new ArrayList<>();
@@ -29,7 +29,7 @@ public class HospitalAggregate {
     }
 
     @CommandHandler
-    public void on(AddWardCommand cmd) throws Exception {
+    public void handle(AddWardCommand cmd) throws Exception {
         log.info("Received {}", cmd);
         if (this.wards.contains(cmd.getWardCode())) {
             throw new WardExistException();

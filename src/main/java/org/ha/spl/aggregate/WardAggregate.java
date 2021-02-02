@@ -29,7 +29,7 @@ public class WardAggregate {
     }
 
     @CommandHandler
-    public WardAggregate (AddBedCommand cmd) throws Exception {
+    public void on(AddBedCommand cmd) throws Exception {
         log.info("Received {}", cmd);
         if (this.beds.containsKey(cmd.getBedNum())) {
             throw new BedExistException();

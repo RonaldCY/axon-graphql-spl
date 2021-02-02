@@ -45,28 +45,30 @@ public class HospitalResolver {
         log.info("addWard {}", dto);
         return this.commandGateway.send(
                 new AddWardCommand(hospCode, dto.getWardCode())).thenApply(obj -> {
-                    return dto;
-                }).exceptionally(exception -> {
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.toString());
-                });
+            return dto;
+        }).exceptionally(exception -> {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.toString());
+        });
     }
 
     @GraphQLMutation
-    public CompletableFuture<Object> addBed(@GraphQLNonNull String hospCode, @GraphQLNonNull String wardCode, @GraphQLArgument(name = "input") @GraphQLNonNull AddBedDTO dto) {
+    public CompletableFuture<AddBedDTO> addBed(@GraphQLNonNull String hospCode, @GraphQLNonNull String wardCode, @GraphQLArgument(name = "input") @GraphQLNonNull AddBedDTO dto) {
         log.info("addBed {} {} {}", hospCode, wardCode, dto);
         return this.commandGateway.send(
-                new AddBedCommand(hospCode + ":" + wardCode, dto.getBedNum()))
-                .exceptionally(exception -> {
+                new AddBedCommand(hospCode + ":" + wardCode, dto.getBedNum())).thenApply(obj -> {
+            return dto;
+        }).exceptionally(exception -> {
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.toString());
                 });
     }
 
     @GraphQLMutation
-    public CompletableFuture<Object> checkIn(@GraphQLNonNull String hospCode, @GraphQLNonNull String wardCode, @GraphQLArgument(name = "input") @GraphQLNonNull CheckInPatientDTO dto) {
+    public CompletableFuture<CheckInPatientDTO> checkIn(@GraphQLNonNull String hospCode, @GraphQLNonNull String wardCode, @GraphQLArgument(name = "input") @GraphQLNonNull CheckInPatientDTO dto) {
         log.info("checkIn {} {} {}", hospCode, wardCode, dto);
         return this.commandGateway.send(
-                new CheckInWardCommand(dto.getHkid(), hospCode, wardCode, dto.getBedNum()))
-                .exceptionally(exception -> {
+                new CheckInWardCommand(dto.getHkid(), hospCode, wardCode, dto.getBedNum())).thenApply(obj -> {
+            return dto;
+        }).exceptionally(exception -> {
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.toString());
                 });
     }
