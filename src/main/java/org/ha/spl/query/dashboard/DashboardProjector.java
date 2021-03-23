@@ -1,9 +1,7 @@
 package org.ha.spl.query.dashboard;
 
-import org.ha.spl.api.FindHospitalQuery;
-import org.ha.spl.api.HospitalCreatedEvent;
-import org.ha.spl.api.HospitalDTO;
-import org.ha.spl.api.WardCreatedEvent;
+import org.axonframework.queryhandling.QueryUpdateEmitter;
+import org.ha.spl.api.*;
 import org.ha.spl.query.HospitalRepository;
 import org.ha.spl.query.WardRepository;
 import lombok.AllArgsConstructor;
@@ -30,7 +28,6 @@ public class DashboardProjector {
         this.hospitalRepository.save(new Hospital(evt.getHospCode(), new ArrayList<>()));
     }
 
-
     @EventHandler
     public void on(WardCreatedEvent evt) {
         log.info("DashboardProjector: {}", evt);
@@ -40,8 +37,14 @@ public class DashboardProjector {
 
     @QueryHandler
     public HospitalDTO handle(FindHospitalQuery query) {
+        log.info("DashboardProjector: {}", query);
         Hospital hospital = this.hospitalRepository.findById(query.getHospCode()).orElseThrow();
         List<String> wards = hospital.getWards().stream().map(Ward::getWardCode).collect(Collectors.toList());
         return new HospitalDTO(hospital.getHospCode(), wards);
+    }
+
+    @QueryHandler
+    public Object handle(NotificationQuery query) {
+        return query;
     }
 }

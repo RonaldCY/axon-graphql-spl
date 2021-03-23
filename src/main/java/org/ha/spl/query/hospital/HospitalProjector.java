@@ -1,7 +1,9 @@
 package org.ha.spl.query.hospital;
 
+import org.axonframework.queryhandling.QueryUpdateEmitter;
 import org.ha.spl.api.HospitalCreatedEvent;
 import org.ha.spl.api.ListHospitalQuery;
+import org.ha.spl.api.NotificationQuery;
 import org.ha.spl.api.WardAddedEvent;
 import org.ha.spl.query.HospitalViewRepository;
 import lombok.AllArgsConstructor;
@@ -19,11 +21,13 @@ import java.util.List;
 public class HospitalProjector {
 
     private final HospitalViewRepository repository;
+    private final QueryUpdateEmitter emitter;
 
     @EventHandler
     public void on(HospitalCreatedEvent evt) {
         log.info("HospitalProjector: {}", evt);
         this.repository.save(new HospitalView(evt.getHospCode(), new ArrayList<>()));
+        emitter.emit(NotificationQuery.class, q -> true , evt.getHospCode());
     }
 
     @EventHandler

@@ -1,6 +1,8 @@
 package org.ha.spl.query.patient;
 
+import org.axonframework.queryhandling.QueryUpdateEmitter;
 import org.ha.spl.api.CheckInWardCancelledEvent;
+import org.ha.spl.api.NotificationQuery;
 import org.ha.spl.api.PatientCreatedEvent;
 import org.ha.spl.api.WardCheckedInEvent;
 import org.ha.spl.query.PatientViewRepository;
@@ -15,11 +17,13 @@ import org.springframework.stereotype.Component;
 public class PatientProjector {
 
     private final PatientViewRepository repository;
+    private final QueryUpdateEmitter emitter;
 
     @EventHandler
     public void on(PatientCreatedEvent evt) {
         log.info("PatientProjector: {}", evt);
         this.repository.save(new PatientView(evt.getHkid(), evt.getName(), null, null, null));
+        emitter.emit(NotificationQuery.class, q -> true , evt.getHkid() + ":" + evt.getName());
     }
 
     @EventHandler
@@ -29,8 +33,9 @@ public class PatientProjector {
         patientView.setHospCode(evt.getHospCode());
         patientView.setWardCode(evt.getWardCode());
         patientView.setBedNum(evt.getBedNum());
+        emitter.emit(NotificationQuery.class, q -> true , evt.getHkid() + ":" + evt.getName() +
+                " at " + evt.getHospCode() + ":" + evt.getWardCode());
     }
-
     @EventHandler
     public void on(CheckInWardCancelledEvent evt) {
         log.info("PatientProjector: {}", evt);
